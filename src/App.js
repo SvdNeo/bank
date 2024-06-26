@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Header from './Header';
+import Deposit from './Deposit';
+import Withdraw from './Withdraw';
+import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 
 function App() {
+  const [balance, setBalance] = useState(0);
+
+  const handleDeposit = (amount) => {
+    setBalance(balance + amount);
+  };
+
+  const handleWithdraw = (amount) => {
+    setBalance(balance - amount);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Header balance={balance} />
+        
+        <Routes>
+          <Route path="/" element={<Deposit onDeposit={handleDeposit} />} />
+          <Route
+            path="/withdraw"
+            element={<Withdraw onWithdraw={handleWithdraw} balance={balance} />}
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
